@@ -59,6 +59,36 @@ func TestPopEmpty(t *testing.T) {
 }
 
 func TestPeek(t *testing.T) {
+	type car struct {
+		make   string
+		model  string
+		colour string
+	}
+	s := Stack[car]{}
+
+	var (
+		porsche = car{make: "Porsche", model: "911", colour: "black"}
+		tesla   = car{make: "Tesla", model: "Roadster", colour: "red"}
+	)
+
+	s.Push(porsche)
+	s.Push(tesla)
+
+	s.Pop()
+
+	got, err := s.Peek()
+	if err != nil {
+		t.Log("unexpected error", err)
+		t.Fail()
+	}
+
+	if got != porsche {
+		t.Logf("s.Peek() = %v ; want %v", got, porsche)
+		t.Fail()
+	}
+}
+
+func TestPeekEmpty(t *testing.T) {
 	s := Stack[string]{}
 
 	_, err := s.Peek()

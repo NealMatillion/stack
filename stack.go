@@ -1,3 +1,4 @@
+// Package stack implements a generic stack.
 package stack
 
 import (
@@ -8,12 +9,12 @@ import (
 // Stack is a generic first-in, last-out container.
 // It is safe to use concurrently.
 type Stack[T any] struct {
-	mu sync.RWMutex
+	mu   sync.RWMutex
 	data []T
 }
 
 // Len returns the number of items in this stack.
-func (s Stack[T]) Len() int {
+func (s *Stack[T]) Len() int {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	return len(s.data)
@@ -36,7 +37,7 @@ func (s *Stack[T]) Pop() (T, error) {
 		return zero, errors.New("cannot pop an empty stack")
 	}
 
-	last := len(s.data)-1
+	last := len(s.data) - 1
 	v := s.data[last]
 	s.data = s.data[:last]
 	return v, nil
